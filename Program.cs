@@ -20,6 +20,7 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalksConnectio
 
 //DI RP
 builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
+builder.Services.AddScoped<IWalkRepositories, SQLWalkRepository>();
 
 //DI Automapper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
