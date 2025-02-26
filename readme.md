@@ -41,3 +41,7 @@ Model state Validations Endpoints -> to block all the bad data from the endpont
 Some common Annotations are [Required] [MaxLength(100)][Range(0,50)]
 
 The alternative way of doing this is using Custome Actin Filters. This is done by override the OnActionExecuting where you can accesse the ModelState. Instead of writting the validation explictly, you can just annotate the action method with the new Attribute
+
+In this section we will learn Filtering, Sorting and Pagination
+Filter is used for retriving subset of the data. (add query string to controllers) ---GET [FromQuery] specify domain /dto property to filter on and the value to filter.
+> /api/walks?filterOn=Name&filterQuery=Track
