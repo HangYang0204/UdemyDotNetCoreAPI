@@ -25,14 +25,19 @@ namespace NZWalks.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] AddWalkRequestDto addWalkRequestDto)
         {
-            //DTO to Domain Model with AutoMapper
-            var walkDomainModel = mapper.Map<Walk>(addWalkRequestDto);
+            if (ModelState.IsValid)
+            {
+                //DTO to Domain Model with AutoMapper
+                var walkDomainModel = mapper.Map<Walk>(addWalkRequestDto);
 
-            //Create
-            await walkRepositories.CreateAsync(walkDomainModel);
+                //Create
+                await walkRepositories.CreateAsync(walkDomainModel);
 
-            //Map domain to dto
-            return Ok(mapper.Map<WalkDTO>(walkDomainModel));
+                //Map domain to dto
+                return Ok(mapper.Map<WalkDTO>(walkDomainModel)); 
+            }
+
+            return BadRequest(ModelState);
         }
 
         // GET WALKS
@@ -69,17 +74,21 @@ namespace NZWalks.API.Controllers
 
         public async Task<IActionResult> Update([FromRoute] Guid id, UpdateWalkRequestDTO updateWalkRequestDTO)
         {
-            //Map DTO to Domain Model
-            var walkDomailModel = mapper.Map<Walk>(updateWalkRequestDTO);
+            if (ModelState.IsValid)
+            {
+                //Map DTO to Domain Model
+                var walkDomailModel = mapper.Map<Walk>(updateWalkRequestDTO);
 
-            //Update via Repo
-            walkDomailModel = await walkRepositories.UpdateAsync(id, walkDomailModel);
+                //Update via Repo
+                walkDomailModel = await walkRepositories.UpdateAsync(id, walkDomailModel);
 
-            //return DTO
-            if (walkDomailModel == null)
-                return NotFound();
+                //return DTO
+                if (walkDomailModel == null)
+                    return NotFound();
 
-            return Ok(mapper.Map<WalkDTO>(walkDomailModel));
+                return Ok(mapper.Map<WalkDTO>(walkDomailModel)); 
+            }
+            return BadRequest(ModelState);
         }
 
         // DELETE A WALK

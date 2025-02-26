@@ -1,3 +1,5 @@
+
+## Week 1
 we create endpint (controllers) and defines action methonds (Get Put Post Delete...)
 to create a property fast, type prop tab tab..
 to create a constuctor using ctor tab
@@ -31,3 +33,9 @@ SQLRegionRepository.cs
 
 AutoMapper
 
+## Week 2
+Model state Validations Endpoints -> to block all the bad data from the endpont
+1. Annotations for DTO Properties;
+2. Check in action methods ModelState.IsValid;
+3. If not valid, should return BadRequest(); \
+Some common Annotations are [Required] [MaxLength(100)][Range(0,50)]
