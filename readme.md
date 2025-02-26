@@ -39,3 +39,5 @@ Model state Validations Endpoints -> to block all the bad data from the endpont
 2. Check in action methods ModelState.IsValid;
 3. If not valid, should return BadRequest(); \
 Some common Annotations are [Required] [MaxLength(100)][Range(0,50)]
+
+The alternative way of doing this is using Custome Actin Filters. This is done by override the OnActionExecuting where you can accesse the ModelState. Instead of writting the validation explictly, you can just annotate the action method with the new Attribute
