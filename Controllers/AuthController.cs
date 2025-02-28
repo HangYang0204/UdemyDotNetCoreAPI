@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NZWalks.API.Models.DTOs;
+using NZWalks.API.Repositories;
 
 namespace NZWalks.API.Controllers
 {
@@ -10,10 +11,12 @@ namespace NZWalks.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly UserManager<IdentityUser> userManager;
+        private readonly ITokenRepository tokenRepository;
 
-        public AuthController(UserManager<IdentityUser> userManager)
+        public AuthController(UserManager<IdentityUser> userManager, ITokenRepository tokenRepository)
         {
             this.userManager = userManager;
+            this.tokenRepository = tokenRepository;
         }
         //POST: /api/Auth/Register
         [HttpPost]
@@ -39,5 +42,32 @@ namespace NZWalks.API.Controllers
             return BadRequest();
         }
 
+        // POST: /api/Auth/Login
+        [HttpPost]
+        [Route("Login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequestDTO loginRequestDTO)
+        {
+            var user = await userManager.FindByEmailAsync(loginRequestDTO.UserName);
+            if (user != null)
+            {
+                var checkPwdResult = await userManager.CheckPasswordAsync(user, loginRequestDTO.Password);
+                if(checkPwdResult)
+                {
+                    //get roles from user
+                    var roles = await userManager.GetRolesAsync(user);
+                    //create token
+                    if(roles != null)
+                    {
+                        var jwtToken = tokenRepository.CreatJWTToken(user, roles.ToList());
+                        var response = new LoginResponseDTO
+                        {
+                            JwtToken = jwtToken
+                        };
+                        return Ok(response);
+                    }
+                }
+            }
+            return BadRequest();
+        }
     }//End Controller
 }
