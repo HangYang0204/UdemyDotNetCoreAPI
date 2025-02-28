@@ -80,3 +80,5 @@ C:\Udemy\NZWalks\NZWalks\NZWalks.API\obj\Debug\net8.0\ref\NZWalks.API.dll
 C:\Udemy\NZWalks\NZWalks\NZWalks.API\bin\Debug\net8.0\AutoMapper.dll
 C:\Udemy\NZWalks\NZWalks\NZWalks.API\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 C:\Udemy\NZWalks\NZWalks\NZWalks.API\obj\Debug\net8.0\NZWalks.API.sourcelink.json
+C:\Udemy\NZWalks\NZWalks\NZWalks.API\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Udemy\NZWalks\NZWalks\NZWalks.API\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll

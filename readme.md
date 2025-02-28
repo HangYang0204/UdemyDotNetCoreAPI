@@ -43,5 +43,31 @@ Some common Annotations are [Required] [MaxLength(100)][Range(0,50)]
 The alternative way of doing this is using Custome Actin Filters. This is done by override the OnActionExecuting where you can accesse the ModelState. Instead of writting the validation explictly, you can just annotate the action method with the new Attribute
 
 In this section we will learn Filtering, Sorting and Pagination
-Filter is used for retriving subset of the data. (add query string to controllers) ---GET [FromQuery] specify domain /dto property to filter on and the value to filter.
+__Filtering__ is used for retriving subset of the data. (add query string to controllers) ---GET [FromQuery] specify domain /dto property to filter on and the value to filter.
 > /api/walks?filterOn=Name&filterQuery=Track
+__Sorting__ is similar to Filtering, it is just addtional Query string/Parameters 
+>/api/walks?filterOn=Name&FilterQuery=park&sortBy=LenthInKm&isAscending=true
+
+__Pagination__ Skip(skipResult).Take(pageSize) where skipResult = (pageNumber - 1) * pageSize. 
+>/api/walks?filterOn=Name&FilterQuery=park&sortBy=LenthInKm&isAscending=true&pageNumber=1&pageSize=10
+
+
+Authentication and Authorization JWT Token
+
+1. User -> website (login with username and pwed) -> API 
+2. API sends back JWT token 
+3. User uses JWT Token to make calls and get databack
+
+Some Nuget packages 
+1. Microsoft.AspNetCore.Authentication.JtwBearer
+2. Microsoft.IdentityMOdel.Tokens
+3. System.IdentityModel.Tokens.JWT
+4. Microsoft.AspNetCore.Identity.EntityFrameworkCore
+   
+Inject Authentication service and use Authencation midleware.
+Then use Attribute [Authorize] in controller to response 401.
+
+Now we are going to Register some logins. \
+Roles:
+1. Reader -- GET
+2. Writer --POST PUT DELETE
