@@ -71,3 +71,8 @@ Now we are going to Register some logins. \
 Roles:
 1. Reader -- GET
 2. Writer --POST PUT DELETE
+
+
+Run EF Migration with multiple DB context should specify the Context name with -Context 
+> Add-Migraiton "Create Auth DB" -Context "NZWalksAuthDbContext" \
+> Update-Database -Context "NZWalksAuthDbContext"
