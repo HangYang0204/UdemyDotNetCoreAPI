@@ -76,3 +76,41 @@ Roles:
 Run EF Migration with multiple DB context should specify the Context name with -Context 
 > Add-Migraiton "Create Auth DB" -Context "NZWalksAuthDbContext" \
 > Update-Database -Context "NZWalksAuthDbContext"
+
+## Week 2
+Add Dependency Logging with Serilog and we are going to inject to Constroller later
+```c#
+var logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("Logs/My_log.txt", rollingInterval: RollingInterval.Day)
+    .MinimumLevel.Information()
+    .CreateLogger();
+
+builder.Logging.ClearProviders(); //cleaer current provider so we can add SeriLog
+builder.Logging.AddSerilog(logger); //Add SeriLog
+```
+
+Here we both log to Console and to File (to directory app/Logs/My_log.txt with new log file every Day)\
+
+In the Controller, we can inject as below:
+```c#
+        private readonly IMyRepository regionRepository;
+        private readonly IMapper mapper;
+        private readonly ILogger<RegionsController> logger;
+
+        public MyController(IMyRepository myRepository, IMapper mapper, ILogger<MyController> logger)
+        {
+            this.regionRepository = myRepository;
+            this.mapper = mapper;
+            this.logger = logger;
+        }
+
+```
+
+Add Middleware `ExceptionHandlerMiddleware.cs` for global exception handling ( we are going to log the exception message to logs and show customized messages to
+users to hide application secrets.), here is how we use it
+```c#
+	//Consume our middleware
+	app.UseMiddleware<ExceptionHandlerMiddleware>();
+```
+we leverage the `RequestDelegate` a function to process HTTP request and returns a task shows process completion
