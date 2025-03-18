@@ -82,3 +82,12 @@ C:\Udemy\NZWalks\NZWalks\NZWalks.API\bin\Debug\net8.0\AutoMapper.Extensions.Micr
 C:\Udemy\NZWalks\NZWalks\NZWalks.API\obj\Debug\net8.0\NZWalks.API.sourcelink.json
 C:\Udemy\NZWalks\NZWalks\NZWalks.API\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Udemy\NZWalks\NZWalks\NZWalks.API\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Udemy\NZWalks\NZWalks\NZWalks.API\bin\Debug\net8.0\Serilog.dll
+C:\Udemy\NZWalks\NZWalks\NZWalks.API\bin\Debug\net8.0\Serilog.AspNetCore.dll
+C:\Udemy\NZWalks\NZWalks\NZWalks.API\bin\Debug\net8.0\Serilog.Extensions.Hosting.dll
+C:\Udemy\NZWalks\NZWalks\NZWalks.API\bin\Debug\net8.0\Serilog.Extensions.Logging.dll
+C:\Udemy\NZWalks\NZWalks\NZWalks.API\bin\Debug\net8.0\Serilog.Formatting.Compact.dll
+C:\Udemy\NZWalks\NZWalks\NZWalks.API\bin\Debug\net8.0\Serilog.Settings.Configuration.dll
+C:\Udemy\NZWalks\NZWalks\NZWalks.API\bin\Debug\net8.0\Serilog.Sinks.Console.dll
+C:\Udemy\NZWalks\NZWalks\NZWalks.API\bin\Debug\net8.0\Serilog.Sinks.Debug.dll
+C:\Udemy\NZWalks\NZWalks\NZWalks.API\bin\Debug\net8.0\Serilog.Sinks.File.dll

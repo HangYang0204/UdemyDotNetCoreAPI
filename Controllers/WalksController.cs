@@ -44,6 +44,9 @@ namespace NZWalks.API.Controllers
         {
             var walks = await walkRepositories.GetAllAsync(filterOn, filterQuery, sortBy, isAscending ?? true);
 
+            //TEST: Create an exception
+            throw new Exception("Hello exception");
+
             return Ok(mapper.Map<List<WalkDTO>>(walks));
         }
 
