@@ -16,14 +16,14 @@ namespace NZWalks.API.Controllers
     [ApiController]
     public class RegionsController : ControllerBase
     {
+        private readonly IRegionRepository regionRepository;
         private readonly IMapper mapper;
         private readonly ILogger<RegionsController> logger;
 
-        public IRegionRepository RegionRepository { get; }
 
         public RegionsController(IRegionRepository regionRepository, IMapper mapper, ILogger<RegionsController> logger)
         {
-            RegionRepository = regionRepository;
+            this.regionRepository = regionRepository;
             this.mapper = mapper;
             this.logger = logger;
         }
@@ -36,7 +36,7 @@ namespace NZWalks.API.Controllers
             logger.LogInformation("GetAll Action Method was invoked");
 
             //Get Data from DataBase -- Domain Models
-            var regions = await RegionRepository.GetAllAsync();
+            var regions = await regionRepository.GetAllAsync();
 
             //Map Domain Models to DTOs
             var regionDto = mapper.Map<List<RegionDTO>>(regions);
@@ -53,7 +53,7 @@ namespace NZWalks.API.Controllers
         [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
-            var region = await RegionRepository.GetByIdAsync(id);
+            var region = await regionRepository.GetByIdAsync(id);
 
             if (region == null)
                 return NotFound();
@@ -75,7 +75,7 @@ namespace NZWalks.API.Controllers
             var regionDomainModel = mapper.Map<Region>(addRegionRequestDTO);
 
             //use DOmain Model to create Region
-            regionDomainModel = await RegionRepository.CreateAsync(regionDomainModel);
+            regionDomainModel = await regionRepository.CreateAsync(regionDomainModel);
 
             //Map Domain MOdel back to DTO
             var regionDto = mapper.Map<RegionDTO>(regionDomainModel);
@@ -96,7 +96,7 @@ namespace NZWalks.API.Controllers
             var regionDomainModel = mapper.Map<Region>(updateRegionRequestDTO);
 
             //Check if exists
-            regionDomainModel = await RegionRepository.UpdateAsync(id, regionDomainModel);
+            regionDomainModel = await regionRepository.UpdateAsync(id, regionDomainModel);
 
             if (regionDomainModel == null)
                 return NotFound();

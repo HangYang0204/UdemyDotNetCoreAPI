@@ -77,7 +77,9 @@ Run EF Migration with multiple DB context should specify the Context name with -
 > Add-Migraiton "Create Auth DB" -Context "NZWalksAuthDbContext" \
 > Update-Database -Context "NZWalksAuthDbContext"
 
-## Week 2
+## Week 3
+__Logging__
+
 Add Dependency Logging with Serilog and we are going to inject to Constroller later
 ```c#
 var logger = new LoggerConfiguration()
@@ -90,7 +92,7 @@ builder.Logging.ClearProviders(); //cleaer current provider so we can add SeriLo
 builder.Logging.AddSerilog(logger); //Add SeriLog
 ```
 
-Here we both log to Console and to File (to directory app/Logs/My_log.txt with new log file every Day)\
+Here we both log to Console and to File (to directory app/Logs/My_log.txt with new log file every Day)
 
 In the Controller, we can inject as below:
 ```c#
@@ -114,3 +116,102 @@ users to hide application secrets.), here is how we use it
 	app.UseMiddleware<ExceptionHandlerMiddleware>();
 ```
 we leverage the `RequestDelegate` a function to process HTTP request and returns a task shows process completion
+
+__API versioning Techniques__
+
+1. URL-based versioning
+2. Query parameter-based versioning
+3. Header-based versioning
+
+If you manually do it, you can implement it by haveing multiple resources and change routing rules like below:
+```shell
+    HTTP GET https://localhost:8080/api/my/v1/GetAll
+    HTTP GET https://localhost:8080/api/my/v2/GetAll
+```
+So you can have multiple controller with same name in V1 folder as well as V2 folder. It is important to have versioning in mind when design APIs
+
+The second option is using Nuget package named `Microsoft.AspNetCore.Mvc.Versioning` add services like below:
+```csharp
+    builder.Services.AddApiVersioning(options =>
+    {
+        options.AssumeDefaultVersionWhenUnspecified = true;
+    });
+```
+and in controller (you can have only one but different version of action method) and annotate with:
+```csharp
+[Route(api/[controller])]
+[ApiController]
+[ApiVersion("1.0")]
+[ApiVersion("2.0")]
+
+public class MyController : ControllerBase
+{
+    [MapToApiVersion("1.0")]
+    [HttpGet]
+    public IactionResult GetV1()
+    {
+        //TODO Code goes here
+    }
+
+    [MapToApiVersion("2.0")]
+    [HttpGet]
+    public IactionResult GetV2()
+    {
+        //TODO different Code goes here
+    }
+}
+
+```
+And you should use the URL to specify the version you are using as below:
+```Shell
+    HTTP GET https://localhost:8080/api/my?api.version=2.0
+```
+
+Ok, how do we mimic the same URI request like we did manually versioning? we can modify routing rules as below:
+```csharp
+[Route(api/v{version:apiVersion}/[controller])]
+[ApiController]
+[ApiVersion("1.0")]
+[ApiVersion("2.0")]
+```
+and now you can call different version like below:
+```shell
+    HTTP GET https://localhost:8080/api/my/v1/GetAll
+    HTTP GET https://localhost:8080/api/my/v2/GetAll
+
+```
+
+__Consuming API__
+If using ASP.NET project, the front end code would use `HttpClient`, once again, we start with inject the services in Program.cs
+```c#
+    builder.Services.AddHttpClient();
+
+```
+and in the controller code you can add the interface of `IHttpClientFactor`
+```Csharp
+{ //inside the controller body
+    private readonly IHttpClinetFactory httpClientFactory;
+    
+    public myController(IHttpClinetFactory httpClientFactory)
+    {
+        this.httpClientFactory = httpClientFactory
+    }
+
+    {//inside your routing page Index() etc...
+
+        List<MyDto> response = new List<MyDto>();
+
+        var endpoint = "https://localhost:8080/api/my";
+        var client = httpClientFactory.CreateClient();
+        var httpReponseMessage = awati client.GetAsync(endpoint);
+
+        httpResponseMessage.EnsureSucessStatusCode();
+
+        reponse.AddRange(await httpResponseMessage.Content.ReadFromJsonAsync<IEnumerable<MyDto>>());
+
+        return View(response);
+
+    }
+}
+    
+```
